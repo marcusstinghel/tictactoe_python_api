@@ -1,0 +1,2 @@
+from app.domain.repositories.player_repository_interface import PlayerRepositoryInterface
+from app.domain.repositories.game_repository_interface import GameRepositoryInterface
