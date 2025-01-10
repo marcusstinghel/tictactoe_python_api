@@ -15,12 +15,12 @@ class GameMoveMaker:
 
     def make_move(self, game: Game, movement: Movement) -> Dict[str, Union[Game, str]]:
         if self.__game_service.check_move_validity(movement=movement) is False:
-            return {'Message': 'Invalid movement', 'game': game}
+            return {'Message': 'Invalid movement', 'game': game.__dict__}
         self.__game_service.make_move()
         updated_game = self.__game_repository.update_game(**vars(self.__game_service.get_game))
         if updated_game.state == 'finished':
             self.__update_player_stats(winner=updated_game.winner)
-        return {'message': 'successfully', 'game': updated_game}
+        return {'message': 'successfully', 'game': updated_game.__dict__}
 
     def __update_player_stats(self, winner: Literal[-1, 0, 1]):
         if winner == 1:
