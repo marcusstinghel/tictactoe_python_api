@@ -4,6 +4,8 @@ This project is a Python API for the Tic Tac Toe game, implementing the entire g
 
 The project's architecture follows the principles of Clean Architecture and Domain-Driven Design (DDD), ensuring a modular, scalable, and maintainable structure. The database is managed using SQLAlchemy as the ORM, and communication between the API and clients is handled via Flask. The Machine Learning component is built with PyTorch, allowing the system to continuously evolve based on the game history.
 
+Training the AI for Tic Tac Toe involves collecting historical game data, processing it, and using a learning model, such as a neural network, to predict the best move. The model is adjusted during training to identify winning patterns and strategies. When evaluated with unseen data, it is fine-tuned to generalize well. Using historical data allows the AI to learn from past experiences, avoid bad moves, and recognize patterns to improve its predictions over time, making it a more efficient and stronger opponent.
+
 ---
 
 ## Running the API
