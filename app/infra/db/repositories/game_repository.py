@@ -1,5 +1,5 @@
 import ast
-from typing import Literal, Union
+from typing import Literal, Union, List
 from sqlalchemy.orm import Session
 
 from app.domain.entities import Game, Board, Movements
@@ -62,6 +62,28 @@ class GameRepository(GameRepositoryInterface):
             winner=game_winner_formatted
         )
         return game
+
+    @classmethod
+    @dc.use_db_session
+    def get_games(cls, games_amount: int) -> List[Game]:
+        db_games = cls.session.query(GameDBEntity).limit(games_amount).all()
+        games = []
+        for db_game in db_games:
+            game_board_formatted = ast.literal_eval(str(db_game.board))
+            game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
+                                                                                                          'finished'] else 'finished'
+            game_movements_formatted = ast.literal_eval(str(db_game.movements)) if db_game.movements != 'None' else None
+            game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
+            game = Game(
+                id=int(str(db_game.id)),
+                board=game_board_formatted,
+                state=game_state_formatted,
+                player_id=int(str(db_game.player_id)),
+                movements=game_movements_formatted,
+                winner=game_winner_formatted
+            )
+            games.append(game)
+        return games
 
     @classmethod
     @dc.use_db_session
