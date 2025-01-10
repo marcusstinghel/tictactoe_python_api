@@ -35,10 +35,12 @@ class GameService:
                 return True
             if all(self.__game.board[0][i] == self.__game.board[j][i] != 0 for j in range(3)):
                 return True
+            if all(self.__game.board[i][i] == 1 for i in range(3)) or all(self.__game.board[i][2 - i] == 0 for i in range(3)):
+                return True
 
     def __declare_winner(self):
         self.__game.state = 'finished'
-        self.__game.is_player_winner = True
+        self.__game.winner = self.__movement['value']
 
     def __update_movements(self):
         self.__game.movements = self.__game.movements or []
