@@ -25,7 +25,7 @@ class GameMoveMaker:
     def __update_player_stats(self, winner: Literal[-1, 0, 1]):
         if winner == 1:
             self.__player_service.declare_victory()
-        elif  not winner == -1:
+        elif winner == -1:
             self.__player_service.declare_defeat()
         else:
             self.__player_service.declare_draw()
