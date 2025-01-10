@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Union, Literal
 
 from app.domain.entities import Game, Movement
 from app.domain.repositories import GameRepositoryInterface, PlayerRepositoryInterface
@@ -19,13 +19,13 @@ class GameMoveMaker:
         self.__game_service.make_move()
         updated_game = self.__game_repository.update_game(**vars(self.__game_service.get_game))
         if updated_game.state == 'finished':
-            self.__update_player_stats(is_player_winner=updated_game.is_player_winner)
+            self.__update_player_stats(winner=updated_game.winner)
         return {'message': 'successfully', 'game': updated_game}
 
-    def __update_player_stats(self, is_player_winner: Union[bool, None]):
-        if is_player_winner:
+    def __update_player_stats(self, winner: Literal[-1, 0, 1]):
+        if winner == 1:
             self.__player_service.declare_victory()
-        elif  not is_player_winner:
+        elif  not winner == -1:
             self.__player_service.declare_defeat()
         else:
             self.__player_service.declare_draw()

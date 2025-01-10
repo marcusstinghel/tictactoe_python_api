@@ -11,7 +11,7 @@ class GameStarter:
             player_id=player_id,
             board=([0, 0, 0], [0, 0, 0], [0, 0, 0]),
             state='in_progress',
-            is_player_winner=False,
+            winner=0,
             movements=None,
         )
         return registered_game

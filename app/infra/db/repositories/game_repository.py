@@ -17,7 +17,7 @@ class GameRepository(GameRepositoryInterface):
                     player_id: int,
                     board: Board,
                     state: Literal['in_progress', 'finished'],
-                    is_player_winner: bool,
+                    winner: Literal[-1, 0, 1],
                     movements: Union[Movements, None]
                     ) -> Game:
         board = str(board)
@@ -27,7 +27,7 @@ class GameRepository(GameRepositoryInterface):
             board=board,
             state=state,
             movements=movements,
-            is_player_winner=is_player_winner,
+            winner=winner,
         )
         cls.session.add(db_game)
         cls.session.commit()
@@ -35,13 +35,14 @@ class GameRepository(GameRepositoryInterface):
         game_movements_formatted = ast.literal_eval(db_game.movements) if db_game.movements is not 'None' else None
         game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
                                                                                                       'finished'] else 'finished'
+        game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
         game = Game(
             id=db_game.id,
             board=game_board_formatted,
             state=game_state_formatted,
             player_id=db_game.player_id,
             movements=game_movements_formatted,
-            is_player_winner=db_game.is_player_winner
+            winner=game_winner_formatted
         )
         return game
 
@@ -51,13 +52,14 @@ class GameRepository(GameRepositoryInterface):
         db_game = cls.session.query(GameDBEntity).get(id)
         game_board_formatted = ast.literal_eval(db_game.board)
         game_movements_formatted = ast.literal_eval(db_game.movements) if db_game.movements is not 'None' else None
+        game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
         game = Game(
             id=db_game.id,
             board=game_board_formatted,
             state=db_game.state,
             player_id=db_game.player_id,
             movements=game_movements_formatted,
-            is_player_winner=db_game.is_player_winner
+            winner=game_winner_formatted
         )
         return game
 
@@ -72,13 +74,14 @@ class GameRepository(GameRepositoryInterface):
         game_movements_formatted = ast.literal_eval(db_game.movements) if db_game.movements is not 'None' else None
         game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
                                                                                                       'finished'] else 'finished'
+        game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
         game = Game(
             id=db_game.id,
             board=game_board_formatted,
             state=game_state_formatted,
             player_id=db_game.player_id,
             movements=game_movements_formatted,
-            is_player_winner=db_game.is_player_winner
+            winner=game_winner_formatted,
         )
         return game
 
@@ -89,7 +92,7 @@ class GameRepository(GameRepositoryInterface):
                     player_id: int,
                     board: Board,
                     state: Literal['in_progress', 'finished'],
-                    is_player_winner: bool,
+                    winner: Literal[-1, 0, 1],
                     movements: Movements = None,
                     ) -> Game:
         db_game = cls.session.query(GameDBEntity).get(id)
@@ -97,18 +100,19 @@ class GameRepository(GameRepositoryInterface):
         db_game.board = str(board)
         db_game.state = state
         db_game.movements = str(movements)
-        db_game.is_player_winner = is_player_winner
+        db_game.winner = winner
         cls.session.commit()
         game_board_formatted = ast.literal_eval(db_game.board)
         game_movements_formatted = ast.literal_eval(db_game.movements) if db_game.movements is not 'None' else None
         game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
                                                                                                       'finished'] else 'finished'
+        game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
         game = Game(
             id=db_game.id,
             board=game_board_formatted,
             state=game_state_formatted,
             player_id=db_game.player_id,
             movements=game_movements_formatted,
-            is_player_winner=db_game.is_player_winner
+            winner=game_winner_formatted,
         )
         return game

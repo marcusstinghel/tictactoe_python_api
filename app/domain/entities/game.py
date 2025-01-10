@@ -13,7 +13,7 @@ class Game:
             state: Literal['in_progress', 'finished'],
             player_id: int,
             movements: Movements,
-            is_player_winner: bool,
+            winner: Literal[-1, 0, 1],
             board: Board,
     ):
         self.id = id
@@ -21,7 +21,7 @@ class Game:
         self.state = state
         self.player_id = player_id
         self.movements = movements
-        self.is_player_winner = is_player_winner
+        self.winner = winner
 
     def __repr__(self):
-        return f"Game(id={self.id}, board={self.board}, state={self.state}, player_id={self.player_id}, movements={self.movements}, is_player_winner={self.is_player_winner})"
+        return f"Game(id={self.id}, board={self.board}, state={self.state}, player_id={self.player_id}, movements={self.movements}, winner={self.winner})"

@@ -13,7 +13,7 @@ class GameRepositoryInterface(ABC):
             player_id: int,
             board: Board,
             state: Literal['in_progress', 'finished'],
-            is_player_winner: bool,
+            winner: Literal[-1, 0, 1],
             movements: Union[Movements, None]
     ) -> Game:
         pass
@@ -33,7 +33,7 @@ class GameRepositoryInterface(ABC):
             player_id: int,
             board: Board,
             state: Literal['in_progress', 'finished'],
-            is_player_winner: bool,
+            winner: Literal[-1, 0, 1],
             movements: Movements = None,
     ) -> Game:
         pass
