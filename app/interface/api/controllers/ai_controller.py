@@ -8,23 +8,29 @@ class AIController:
 
     @staticmethod
     def make_move():
-        player_id = request.args.get('player-id')
-        game_repository = GameRepository()
-        ai_movement = AIMovement()
-        ml_move_maker = MLMoveMaker(game_repository=game_repository, ml_movement=ai_movement)
-        movement = ml_move_maker.make_move(
-            player_id=int(player_id),
-        )
-        return jsonify(movement), 200
+        try:
+            player_id = request.args.get('player-id')
+            game_repository = GameRepository()
+            ai_movement = AIMovement()
+            ml_move_maker = MLMoveMaker(game_repository=game_repository, ml_movement=ai_movement)
+            movement = ml_move_maker.make_move(
+                player_id=int(player_id),
+            )
+            return jsonify(movement), 200
+        except Exception as e:
+            return jsonify({'message': str(e)}), 500
 
     @staticmethod
     def train():
-        data = request.json
-        ai_learning = AILearning()
-        game_repository = GameRepository()
-        ml_trainer = MLTrainer(ml_learning=ai_learning, game_repository=game_repository)
-        ml_trainer.train(
-            games_amount=data['amount'],
-            pth_file_path='tic_tac_toe_model.pth'
-        )
-        return jsonify('successfully trained AI'), 200
+        try:
+            data = request.json
+            ai_learning = AILearning()
+            game_repository = GameRepository()
+            ml_trainer = MLTrainer(ml_learning=ai_learning, game_repository=game_repository)
+            ml_trainer.train(
+                games_amount=data['amount'],
+                pth_file_path='tic_tac_toe_model.pth'
+            )
+            return jsonify('successfully trained AI'), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
