@@ -17,4 +17,4 @@ class Game(Base):
     player = relationship('Player', back_populates='games')
 
     def __repr__(self):
-        return f"<Player(id={self.id}, board={self.board}, state={self.state}, player_id={self.player_id}, movements={self.movements}, winner={self.winner})>"
+        return f"<Game(id={self.id}, board={self.board}, state={self.state}, player_id={self.player_id}, movements={self.movements}, winner={self.winner})>"
