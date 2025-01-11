@@ -92,6 +92,8 @@ class GameRepository(GameRepositoryInterface):
             GameDBEntity.player_id == player_id,
             GameDBEntity.state == 'in_progress'
         ).first()
+        if db_game is None:
+            raise ValueError('There is no game in progress')
         game_board_formatted = ast.literal_eval(str(db_game.board))
         game_movements_formatted = ast.literal_eval(str(db_game.movements)) if db_game.movements is not 'None' else None
         game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
