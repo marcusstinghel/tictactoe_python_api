@@ -1,5 +1,5 @@
 import ast
-from typing import Literal, Union, List
+from typing import Literal, Union, List, Type
 from sqlalchemy.orm import Session
 
 from app.domain.entities import Game, Board, Movements
@@ -88,20 +88,20 @@ class GameRepository(GameRepositoryInterface):
     @classmethod
     @dc.use_db_session
     def get_in_progress_game(cls, player_id: int) -> Game:
-        db_game = cls.session.query(GameDBEntity).filter(
+        db_game: Type[GameDBEntity] = cls.session.query(GameDBEntity).filter(
             GameDBEntity.player_id == player_id,
             GameDBEntity.state == 'in_progress'
         ).first()
-        game_board_formatted = ast.literal_eval(db_game.board)
-        game_movements_formatted = ast.literal_eval(db_game.movements) if db_game.movements is not 'None' else None
+        game_board_formatted = ast.literal_eval(str(db_game.board))
+        game_movements_formatted = ast.literal_eval(str(db_game.movements)) if db_game.movements is not 'None' else None
         game_state_formatted: Literal['in_progress', 'finished'] = db_game.state if db_game.state in ['in_progress',
                                                                                                       'finished'] else 'finished'
         game_winner_formatted: Literal[-1, 0, 1] = db_game.winner if db_game.winner in [-1, 0, 1] else 0
         game = Game(
-            id=db_game.id,
+            id=int(str(db_game.id)),
             board=game_board_formatted,
             state=game_state_formatted,
-            player_id=db_game.player_id,
+            player_id=int(str(db_game.player_id)),
             movements=game_movements_formatted,
             winner=game_winner_formatted,
         )
