@@ -7,12 +7,15 @@ class PlayerController:
 
     @staticmethod
     def create_player():
-        data = request.json
-        player_repository = PlayerRepository()
-        player_creator = PlayerCreator(player_repository=player_repository)
-        created_player = player_creator.create(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            nickname=data['nickname'],
-        )
-        return jsonify(created_player.__dict__), 201
+        try:
+            data = request.json
+            player_repository = PlayerRepository()
+            player_creator = PlayerCreator(player_repository=player_repository)
+            created_player = player_creator.create(
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+                nickname=data['nickname'],
+            )
+            return jsonify(created_player.__dict__), 201
+        except Exception as e:
+            return jsonify({'message': str(e)}), 500
